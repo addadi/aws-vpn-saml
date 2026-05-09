@@ -1,0 +1,27 @@
+[package]
+name = "aws-vpn-saml"
+version = "0.2.0"
+edition = "2021"
+description = "SAML authentication helper for AWS Client VPN (CRV1 flow)"
+license = "MIT"
+repository = "https://github.com/addadi/aws-vpn-saml"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+hyper = { version = "1", features = ["server", "http1"] }
+hyper-util = { version = "0.1", features = ["tokio"] }
+http-body-util = "0.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+clap = { version = "4", features = ["derive", "env"] }
+urlencoding = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+directories = "6"
+tokio-util = "0.7"
+
+[profile.release]
+opt-level = "s"
+lto = true
+strip = true

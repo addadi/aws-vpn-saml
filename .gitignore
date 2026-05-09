@@ -1,3 +1,8 @@
 aws-vpn-saml
 aws-connect-helper
 dist/
+
+
+# Added by cargo
+
+/target
