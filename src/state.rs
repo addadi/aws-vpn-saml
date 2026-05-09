@@ -94,7 +94,7 @@ impl StateMachine {
         let password = format!(
             "CRV1::{}::{}",
             challenge_data.state_id,
-            urlencoding::encode(&saml_response.response)
+            saml_response.response
         );
 
         println!("N/A");

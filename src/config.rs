@@ -11,12 +11,13 @@ pub struct Config {
     #[arg(
         long,
         short = 'o',
+        visible_alias = "ovpn",
         env = "AWS_VPN_OVPN_BIN",
         default_value = "/usr/bin/openvpn-aws"
     )]
     pub ovpn_bin: PathBuf,
 
-    #[arg(long, short = 'c', env = "AWS_VPN_OVPN_CONF")]
+    #[arg(long, short = 'c', visible_alias = "config", env = "AWS_VPN_OVPN_CONF")]
     pub ovpn_conf: PathBuf,
 
     #[arg(

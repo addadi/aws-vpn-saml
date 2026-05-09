@@ -11,8 +11,37 @@ use tracing_subscriber::EnvFilter;
 use config::Config;
 use state::StateMachine;
 
+fn preprocess_go_flags(args: Vec<String>) -> Vec<String> {
+    let mut out = vec![args[0].clone()];
+    let mut i = 1;
+    while i < args.len() {
+        let arg = &args[i];
+        if arg == "-ovpn" && i + 1 < args.len() {
+            out.push("--ovpn-bin".into());
+            i += 1;
+            out.push(args[i].clone());
+        } else if arg == "-config" && i + 1 < args.len() {
+            out.push("--ovpn-conf".into());
+            i += 1;
+            out.push(args[i].clone());
+        } else if arg == "-on-challenge" && i + 1 < args.len() {
+            out.push("--on-challenge".into());
+            i += 1;
+            out.push(args[i].clone());
+        } else if arg == "-verbose" {
+            out.push("--verbose".into());
+        } else {
+            out.push(arg.clone());
+        }
+        i += 1;
+    }
+    out
+}
+
 fn main() {
-    let config = Config::parse();
+    let args = std::env::args().collect::<Vec<_>>();
+    let args = preprocess_go_flags(args);
+    let config = Config::parse_from(args);
 
     let log_level = if config.verbose {
         Level::DEBUG
