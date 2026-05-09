@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check:
+    name: Check & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+
+      - name: Check
+        run: cargo check --locked
+
+      - name: Test
+        run: cargo test
+
+      - name: Lint
+        run: |
+          rustup component add clippy
+          cargo clippy -- -D warnings
+
+      - name: Format
+        run: |
+          rustup component add rustfmt
+          cargo fmt --check
+
+      - name: Build release
+        run: cargo build --release
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: aws-vpn-saml-linux-amd64
+          path: target/release/aws-vpn-saml
