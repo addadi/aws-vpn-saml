@@ -1,9 +1,9 @@
-use std::sync::Arc;
+use http_body_util::BodyExt;
 use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
 use tokio::sync::mpsc;
 use tokio::time::{timeout, Duration};
 use tracing::{info, warn};
-use http_body_util::BodyExt;
 
 pub struct SamlResult {
     pub response: String,
@@ -29,7 +29,10 @@ pub async fn listen_for_saml(
 
     let result = timeout(Duration::from_secs(timeout_secs), async {
         loop {
-            let (stream, _) = listener.accept().await.map_err(|e| format!("accept: {e}"))?;
+            let (stream, _) = listener
+                .accept()
+                .await
+                .map_err(|e| format!("accept: {e}"))?;
             let io = hyper_util::rt::TokioIo::new(stream);
             let tx = tx.clone();
             let done = done.clone();
@@ -84,8 +87,7 @@ async fn handle_request(
 
     match *req.method() {
         hyper::Method::POST => {
-            let body = BodyExt::collect(req.into_body())
-                .await?;
+            let body = BodyExt::collect(req.into_body()).await?;
 
             let bytes = body.to_bytes();
             let body_str = String::from_utf8_lossy(&bytes);
@@ -104,9 +106,7 @@ async fn handle_request(
                     .unwrap())
             }
         }
-        hyper::Method::GET => {
-            Ok(hyper::Response::new(r#"{"status":"ok"}"#.to_string()))
-        }
+        hyper::Method::GET => Ok(hyper::Response::new(r#"{"status":"ok"}"#.to_string())),
         _ => Ok(hyper::Response::builder()
             .status(405)
             .body("Method not allowed".to_string())

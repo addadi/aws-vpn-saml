@@ -2,9 +2,18 @@ use clap::Parser;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
-#[command(name = "aws-vpn-saml", version, about = "SAML auth helper for AWS Client VPN")]
+#[command(
+    name = "aws-vpn-saml",
+    version,
+    about = "SAML auth helper for AWS Client VPN"
+)]
 pub struct Config {
-    #[arg(long, short = 'o', env = "AWS_VPN_OVPN_BIN", default_value = "/usr/bin/openvpn-aws")]
+    #[arg(
+        long,
+        short = 'o',
+        env = "AWS_VPN_OVPN_BIN",
+        default_value = "/usr/bin/openvpn-aws"
+    )]
     pub ovpn_bin: PathBuf,
 
     #[arg(long, short = 'c', env = "AWS_VPN_OVPN_CONF")]

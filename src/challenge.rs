@@ -116,11 +116,9 @@ pub async fn get_challenge(
             Ok(data)
         }
         Ok(Err(e)) => Err(e),
-        Err(_) => {
-            Err(format!(
-                "timeout waiting for CRV1 challenge ({timeout_secs}s)"
-            ))
-        }
+        Err(_) => Err(format!(
+            "timeout waiting for CRV1 challenge ({timeout_secs}s)"
+        )),
     }
 }
 
@@ -201,7 +199,10 @@ mod tests {
         let line = "2026-05-09 12:01:44 WARNING: Received unknown control message: _FAILED,CRV1:R:instance-2/7637814664337430111/b9ebe713-6b13-45d0-80b7-6a60cfc361b4:b'Ti9B':https://portal.sso.us-east-1.amazonaws.com/saml/assertion/NTA5Mzg5MTgxMTExX2lucy1mMzZiOGY4YTU1OGJlNjgy?SAMLRequest=fZLLbtswEEX3";
         let data = parse_crv1_line(line).unwrap();
         assert!(data.saml_url.starts_with("https://portal.sso"));
-        assert_eq!(data.state_id, "instance-2/7637814664337430111/b9ebe713-6b13-45d0-80b7-6a60cfc361b4");
+        assert_eq!(
+            data.state_id,
+            "instance-2/7637814664337430111/b9ebe713-6b13-45d0-80b7-6a60cfc361b4"
+        );
     }
 
     #[test]

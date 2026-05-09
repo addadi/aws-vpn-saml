@@ -16,15 +16,24 @@ impl Error {
     }
 
     fn config(msg: impl Into<String>) -> Self {
-        Error { message: msg.into(), code: 1 }
+        Error {
+            message: msg.into(),
+            code: 1,
+        }
     }
 
     fn challenge(msg: impl Into<String>) -> Self {
-        Error { message: msg.into(), code: 2 }
+        Error {
+            message: msg.into(),
+            code: 2,
+        }
     }
 
     fn saml(msg: impl Into<String>) -> Self {
-        Error { message: msg.into(), code: 3 }
+        Error {
+            message: msg.into(),
+            code: 3,
+        }
     }
 }
 
@@ -36,7 +45,10 @@ impl std::fmt::Display for Error {
 
 impl From<String> for Error {
     fn from(s: String) -> Self {
-        Error { message: s, code: 1 }
+        Error {
+            message: s,
+            code: 1,
+        }
     }
 }
 
