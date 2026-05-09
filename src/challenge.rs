@@ -21,7 +21,7 @@ pub async fn resolve_remote(ovpn_conf: &Path) -> Result<RemoteInfo, String> {
         .lines()
         .find_map(|line| {
             let parts: Vec<&str> = line.split_whitespace().collect();
-            if parts.get(0) == Some(&"remote") {
+            if parts.first() == Some(&"remote") {
                 parts.get(1).map(|s| s.to_string())
             } else {
                 None

@@ -82,8 +82,8 @@ async fn handle_request(
         ));
     }
 
-    match req.method() {
-        &hyper::Method::POST => {
+    match *req.method() {
+        hyper::Method::POST => {
             let body = BodyExt::collect(req.into_body())
                 .await?;
 
@@ -104,7 +104,7 @@ async fn handle_request(
                     .unwrap())
             }
         }
-        &hyper::Method::GET => {
+        hyper::Method::GET => {
             Ok(hyper::Response::new(r#"{"status":"ok"}"#.to_string()))
         }
         _ => Ok(hyper::Response::builder()
